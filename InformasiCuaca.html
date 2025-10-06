@@ -113,5 +113,84 @@ button:hover {
             </div>
         </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    function getCuaca() {
+        const lokasiInput = document.getElementById('lokasi-input').value.trim();
+        if (!lokasiInput) {
+            alert('Masukkan nama lokasi terlebih dahulu!');
+            return;
+        }
+
+        const cuacaInfo = document.getElementById('cuaca-info');
+        cuacaInfo.innerHTML = '<p class="loading">Loading...</p>';
+
+        const url = "http://api.weatherapi.com/v1/current.json?key=a78a0d7d89ca447a91110851250610&q=" + encodeURIComponent(lokasiInput) + "&aqi=no";
+
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function(data) {
+                const lokasi = data.location.name;
+                const negara = data.location.country;
+                const region = data.location.region || '-';
+                const suhu = data.current.temp_c;
+                const kelembapan = data.current.humidity;
+                const latitude = data.location.lat;
+                const longitude = data.location.lon;
+
+                cuacaInfo.innerHTML = `
+                    <div class="info-item">
+                        <div class="info-label">Negara :</div>
+                        <div class="info-value">${negara}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Provinsi :</div>
+                        <div class="info-value">${region}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Kecamatan :</div>
+                        <div class="info-value">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Suhu :</div>
+                        <div class="info-value">${suhu}°C</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Kelembapan :</div>
+                        <div class="info-value">${kelembapan}%</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Lokasi :</div>
+                        <div class="info-value">${lokasi}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Latitude :</div>
+                        <div class="info-value">${latitude}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Longitude :</div>
+                        <div class="info-value">${longitude}</div>
+                    </div>
+                `;
+            },
+            error: function() {
+                cuacaInfo.innerHTML = '<p class="error">Gagal memuat data cuaca. Periksa nama lokasi dan coba lagi.</p>';
+            }
+        });
+    }
+
+    // Enter key listener
+    document.getElementById('lokasi-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            getCuaca();
+        }
+    });
+</script>
+
 </body>
 </html>
