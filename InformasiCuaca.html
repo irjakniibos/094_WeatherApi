@@ -28,6 +28,19 @@
 <body>
     <div class="container">
         <h1>INFORMASI CUACA</h1>
+        <div class="input-section">
+            <div class="input-group">
+                <label>Lokasi :</label>
+                <input type="text" id="lokasi-input" placeholder="Masukkan nama kota..." value="">
+                <button onclick="getCuaca()">GET</button>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <div id="cuaca-info">
+                <p class="loading">Masukkan lokasi dan klik GET untuk melihat info cuaca</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
